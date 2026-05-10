@@ -1,10 +1,5 @@
-/* ===========================
-   MATTHEW PORTFOLIO — STYLE.CSS
-   =========================== */
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
 
-/* ── CSS Variables ── */
 :root {
   --cream:       #faf6ef;
   --cream-dark:  #f2ead9;
@@ -22,7 +17,6 @@
   --shadow-lg:   0 12px 48px rgba(30,20,8,.16);
 }
 
-/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -36,7 +30,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 a  { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
-/* ── Noise texture overlay ── */
 body::before {
   content: '';
   position: fixed;
@@ -46,9 +39,6 @@ body::before {
   z-index: 999;
 }
 
-/* ══════════════════════════════
-   NAVBAR
-══════════════════════════════ */
 .navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -101,7 +91,6 @@ body::before {
 .nav-links a.active::after,
 .nav-links a:hover::after { width: 100%; }
 
-/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -122,7 +111,6 @@ body::before {
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile menu */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -152,14 +140,9 @@ body::before {
 .mobile-menu a:hover,
 .mobile-menu a.active { color: var(--orange); }
 
-/* ══════════════════════════════
-   PAGE WRAPPER
-══════════════════════════════ */
+
 .page-content { padding-top: var(--nav-h); }
 
-/* ══════════════════════════════
-   BUTTONS
-══════════════════════════════ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -202,9 +185,6 @@ body::before {
   box-shadow: 0 6px 20px rgba(30,20,8,.25);
 }
 
-/* ══════════════════════════════
-   SECTION DIVIDER / ORNAMENT
-══════════════════════════════ */
 .section-ornament {
   display: flex;
   align-items: center;
@@ -233,9 +213,7 @@ body::before {
   margin: 0 auto;
 }
 
-/* ══════════════════════════════
-   FOOTER
-══════════════════════════════ */
+
 .footer {
   background: var(--cream-dark);
   border-top: 1px solid rgba(201,152,58,.2);
@@ -258,9 +236,7 @@ body::before {
   color: var(--text-muted);
 }
 
-/* ══════════════════════════════
-   "MAYBE YOU'RE INTERESTED" CARDS
-══════════════════════════════ */
+
 .interested-section {
   padding: 4rem 5%;
   background: var(--cream-dark);
@@ -323,7 +299,7 @@ body::before {
   margin-bottom: .8rem;
 }
 
-/* placeholder images */
+
 .placeholder-img {
   background: var(--cream-dark);
   display: flex;
@@ -334,9 +310,7 @@ body::before {
   border: 1px dashed rgba(201,152,58,.4);
 }
 
-/* ══════════════════════════════
-   ANIMATE ON SCROLL
-══════════════════════════════ */
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -351,9 +325,7 @@ body::before {
 .reveal-delay-3 { transition-delay: .3s; }
 .reveal-delay-4 { transition-delay: .4s; }
 
-/* ══════════════════════════════
-   RESPONSIVE BREAKPOINTS
-══════════════════════════════ */
+
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
