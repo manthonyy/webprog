@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* ── HERO ── */
+ 
     .hero {
       min-height: calc(100vh - var(--nav-h));
       display: grid;
@@ -96,7 +96,7 @@
     .hero-img-badge .badge-text { font-size: .78rem; line-height: 1.4; }
     .hero-img-badge .badge-text strong { display: block; color: var(--dark); font-size: .85rem; }
 
-    /* ── WHAT I DO ── */
+
     .what-i-do {
       padding: 6rem 8%;
       background: var(--cream);
@@ -153,7 +153,7 @@
     }
     .service-card p { font-size: .9rem; color: var(--text-muted); line-height: 1.7; }
 
-    /* ── PREVIEW CAROUSEL ── */
+  
     .preview-section {
       padding: 6rem 8%;
       background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
@@ -238,7 +238,7 @@
       border-radius: 4px;
     }
 
-    /* ── RESPONSIVE ── */
+  
     @media (max-width: 900px) {
       .hero {
         grid-template-columns: 1fr;
@@ -263,7 +263,7 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+
   <nav class="navbar">
     <a class="nav-logo" href="index.html">
       <span class="logo-icon">✦</span> Matthew
@@ -278,7 +278,7 @@
     </button>
   </nav>
 
-  <!-- MOBILE MENU -->
+
   <div class="mobile-menu">
     <a href="index.html" class="active">Home</a>
     <a href="hobby.html">Hobby</a>
@@ -287,7 +287,7 @@
 
   <main class="page-content">
 
-    <!-- HERO -->
+ 
     <section class="hero">
       <div class="hero-left">
         <div class="hero-stars reveal">⭑ ⭑ ⭑</div>
@@ -307,7 +307,7 @@
 
       <div class="hero-img-wrap reveal reveal-delay-2">
         <div class="hero-img-frame">
-          <!-- Replace src with your photo -->
+         
           <img
             src="assets/matthew-hero.jpeg"
             alt="Matthew"
@@ -318,7 +318,7 @@
       </div>
     </section>
 
-    <!-- WHAT I DO -->
+   
     <section class="what-i-do">
       <div class="section-head">
         <div class="section-ornament reveal">
@@ -351,7 +351,7 @@
       </div>
     </section>
 
-    <!-- PREVIEW CAROUSEL -->
+   
     <section class="preview-section">
       <div class="section-head">
         <div class="section-ornament reveal">
@@ -366,10 +366,10 @@
       <div class="carousel-wrapper reveal">
         <div class="carousel-track" id="carouselTrack">
 
-          <!-- Slide 1: Gallery -->
+        
           <div class="carousel-slide" onclick="location.href='gallery.html'">
             <div class="slide-img placeholder-img" style="background:linear-gradient(135deg,#1a2a3a,#2d4a6b);">
-              <img src="assets/preview-gallery.jpg" alt="Gallery" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />
+              <img src="assets/preview-gallery.JPG" alt="Gallery" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />
             </div>
             <div class="slide-overlay">
               <p>My Gallery</p>
@@ -378,7 +378,7 @@
             </div>
           </div>
 
-          <!-- Slide 2: Hobby -->
+      
           <div class="carousel-slide" onclick="location.href='hobby.html'">
             <div class="slide-img placeholder-img" style="background:linear-gradient(135deg,#1a0a0a,#3a1a10);">
               <img src="assets/preview-hobby.jpg" alt="Hobby" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />
@@ -432,7 +432,7 @@
 
   </main>
 
-  <!-- FOOTER -->
+
   <footer class="footer">
     <div class="footer-ornament">
       <div class="line"></div>
@@ -442,11 +442,11 @@
     <p>© 2026 Matthew. All rights reserved.</p>
   </footer>
 
-  <!-- jQuery + JS -->
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="main.js"></script>
   <script>
-    /* Carousel */
+
     let current = 0;
     const slides = $('.carousel-track .carousel-slide').length;
 
@@ -461,7 +461,7 @@
     $('#prevBtn').on('click', () => goTo(current - 1));
     $('.dot').on('click', function () { goTo(parseInt($(this).data('index'))); });
 
-    /* Auto-play */
+
     setInterval(() => goTo(current + 1), 5000);
   </script>
 </body>
