@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matthew — Gallery</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .gallery-hero {
+      padding: 5rem 8% 3.5rem;
+      background: linear-gradient(135deg, var(--cream) 60%, var(--cream-dark) 100%);
+      border-bottom: 1px solid rgba(201,152,58,.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .gallery-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,152,58,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .gallery-ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .gallery-ornament .line { width: 30px; height: 1px; background: var(--gold); }
+    .gallery-ornament .icon { font-size: 1rem; color: var(--gold); }
+
+    .gallery-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      color: var(--dark);
+      margin-bottom: .8rem;
+    }
+    .gallery-hero p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: 1.5rem 8%;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(201,152,58,.12);
+      background: var(--cream);
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 10;
+    }
+    .filter-btn {
+      padding: .4rem 1.1rem;
+      border-radius: 50px;
+      border: 1.5px solid rgba(201,152,58,.25);
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: var(--white);
+    }
+
+    .gallery-section { padding: 3rem 8% 4rem; }
+
+    .masonry {
+      columns: 3;
+      column-gap: 1rem;
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform .3s ease;
+    }
+    .masonry-item:hover { transform: scale(1.015); }
+    .masonry-item img,
+    .masonry-item .ph {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+    }
+    .masonry-item .ph {
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.4);
+      font-size: .75rem;
+      font-style: italic;
+      min-height: 160px;
+    }
+    .masonry-item .hover-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,12,4,.45);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .masonry-item:hover .hover-overlay { opacity: 1; }
+    .hover-overlay i { font-size: 1.8rem; color: white; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,7,3,.92);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+    .lightbox-inner img {
+      max-width: 90vw;
+      max-height: 85vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 1.5rem; right: 1.5rem;
+      background: rgba(255,255,255,.15);
+      border: none;
+      color: white;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,.3); }
+
+    .lightbox-nav {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.12);
+      border: none;
+      color: white;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,.25); }
+    .lightbox-nav.lb-prev { left: 1.5rem; }
+    .lightbox-nav.lb-next { right: 1.5rem; }
+
+    .lightbox-counter {
+      position: fixed;
+      bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,.6);
+      font-size: .85rem;
+    }
+
+    @media (max-width: 900px) {
+      .masonry { columns: 2; }
+      .gallery-hero { padding: 4rem 6% 3rem; }
+      .gallery-section { padding: 2rem 6% 3rem; }
+      .filter-bar { padding: 1rem 6%; }
+    }
+    @media (max-width: 560px) {
+      .masonry { columns: 1; }
+      .gallery-hero { padding: 3rem 5% 2.5rem; }
+      .gallery-section { padding: 1.5rem 5% 2.5rem; }
+      .filter-bar { padding: 1rem 5%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">
+      <span class="logo-icon">✦</span> Matthew
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="hobby.html">Hobby</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="hobby.html">Hobby</a>
+    <a href="gallery.html" class="active">Gallery</a>
+  </div>
+
+  <main class="page-content">
+
+    <section class="gallery-hero">
+      <div class="gallery-ornament reveal">
+        <div class="line"></div>
+        <span class="icon">✦</span>
+      </div>
+      <h1 class="reveal">Photo Gallery</h1>
+      <p class="reveal">I Present You A Gallery of The Most Precious Thing I've Captured in My Life.</p>
+    </section>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+    </div>
+
+    <section class="gallery-section">
+      <div class="masonry" id="masonryGrid">
+
+       
+        <div class="masonry-item reveal" data-category="urban" data-src="assets/gallery-1.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0d1520,#1a2a3e); aspect-ratio:3/4;">
+            <img src="assets/gallery-1.jpg" alt="Urban 1" onerror="this.style.display='none'; this.parentElement.style.minHeight='220px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-1" data-category="urban" data-src="assets/gallery-2.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#101a10,#1e3020); aspect-ratio:4/3;">
+            <img src="assets/gallery-2.jpeg" alt="Urban 2" onerror="this.style.display='none'; this.parentElement.style.minHeight='160px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-2" data-category="urban" data-src="assets/gallery-3.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#1a1208,#2e2010); aspect-ratio:3/4;">
+            <img src="assets/gallery-3.jpg" alt="Japan alley" onerror="this.style.display='none'; this.parentElement.style.minHeight='220px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        
+        <div class="masonry-item reveal" data-category="urban" data-src="assets/gallery-4.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#1a100a,#2e1e12); aspect-ratio:1/1;">
+            <img src="assets/gallery-4.jpeg" alt="Architecture" onerror="this.style.display='none'; this.parentElement.style.minHeight='200px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-1" data-category="sky" data-src="assets/gallery-5.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0a1a2a,#1a3050); aspect-ratio:4/3;">
+            <img src="assets/gallery-5.jpeg" alt="Sky clouds" onerror="this.style.display='none'; this.parentElement.style.minHeight='160px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-2" data-category="sky" data-src="assets/gallery-6.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#3a1008,#5a2018); aspect-ratio:1/1;">
+            <img src="assets/gallery-6.jpeg" alt="Sunset" onerror="this.style.display='none'; this.parentElement.style.minHeight='200px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-3" data-category="nature" data-src="assets/gallery-7.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0e1e0e,#1a3018); aspect-ratio:3/4;">
+            <img src="assets/gallery-7.jpg" alt="Treetops" onerror="this.style.display='none'; this.parentElement.style.minHeight='220px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+      
+        <div class="masonry-item reveal" data-category="people" data-src="assets/gallery-8.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#101010,#202020); aspect-ratio:16/10;">
+            <img src="assets/gallery-8.jpeg" alt="Friends class" onerror="this.style.display='none'; this.parentElement.style.minHeight='160px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-1" data-category="people" data-src="assets/gallery-9.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#150f08,#2a1e10); aspect-ratio:16/10;">
+            <img src="assets/gallery-9.jpeg" alt="Friends event" onerror="this.style.display='none'; this.parentElement.style.minHeight='160px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+      
+        <div class="masonry-item reveal" data-category="nature" data-src="assets/gallery-10.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0e1a0a,#1e3214); aspect-ratio:3/4;">
+            <img src="assets/gallery-10.jpeg" alt="Forest path" onerror="this.style.display='none'; this.parentElement.style.minHeight='220px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-1" data-category="sky" data-src="assets/gallery-11.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0a1828,#1430488); aspect-ratio:9/16;">
+            <img src="assets/gallery-11.jpeg" alt="Sky bridge" onerror="this.style.display='none'; this.parentElement.style.minHeight='300px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-2" data-category="nature" data-src="assets/gallery-12.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0a1a0a,#142814); aspect-ratio:3/4;">
+            <img src="assets/gallery-12.jpg" alt="Greenery" onerror="this.style.display='none'; this.parentElement.style.minHeight='220px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+       
+        <div class="masonry-item reveal" data-category="people" data-src="assets/gallery-13.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#2a0a2a,#440a44); aspect-ratio:3/4;">
+            <img src="assets/gallery-13.jpg" alt="Concert" onerror="this.style.display='none'; this.parentElement.style.minHeight='220px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+        <div class="masonry-item reveal reveal-delay-1" data-category="people" data-src="assets/gallery-14.jpg">
+          <div class="ph" style="background:linear-gradient(160deg,#0e1820,#1a2c38); aspect-ratio:1/1;">
+            <img src="assets/gallery-14.jpeg" alt="Portrait outdoor" onerror="this.style.display='none'; this.parentElement.style.minHeight='200px';" />
+          </div>
+          <div class="hover-overlay"><i class="fa fa-expand"></i></div>
+        </div>
+
+      </div>
+    </section>
+
+    
+    <div class="interested-section">
+      <h3><span>⭑</span> Maybe You're Interested?</h3>
+      <div class="interested-grid">
+        <div class="interested-card reveal">
+          <div class="img-wrap placeholder-img" style="background:linear-gradient(135deg,#1a0a20,#301540);">
+            <img src="assets/int-hobby.jpg" alt="Hobby" onerror="this.style.display='none'" />
+          </div>
+          <div class="overlay"></div>
+          <div class="card-content">
+            <p>Read</p>
+            <h4>Know More About My Hobby</h4>
+            <a href="hobby.html" class="btn btn-dark">View Hobby</a>
+          </div>
+        </div>
+        <div class="interested-card reveal reveal-delay-1">
+          <div class="img-wrap placeholder-img" style="background:linear-gradient(135deg,#0a1a20,#152c38);">
+            <img src="assets/int-about.jpeg" alt="About" onerror="this.style.display='none'" />
+          </div>
+          <div class="overlay"></div>
+          <div class="card-content">
+            <p>Learn</p>
+            <h4>About me</h4>
+            <a href="index.html" class="btn btn-dark">View My Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  
+  <footer class="footer">
+    <div class="footer-ornament">
+      <div class="line"></div>
+      <span>✦</span>
+      <div class="line"></div>
+    </div>
+    <p>© 2026 Matthew. All rights reserved.</p>
+  </footer>
+
+  
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose"><i class="fa fa-times"></i></button>
+    <button class="lightbox-nav lb-prev" id="lbPrev"><i class="fa fa-chevron-left"></i></button>
+    <div class="lightbox-inner">
+      <img src="" alt="Gallery photo" id="lbImg" />
+    </div>
+    <button class="lightbox-nav lb-next" id="lbNext"><i class="fa fa-chevron-right"></i></button>
+    <div class="lightbox-counter" id="lbCounter"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+   
+    $('.filter-btn').on('click', function () {
+      $('.filter-btn').removeClass('active');
+      $(this).addClass('active');
+      const filter = $(this).data('filter');
+
+      if (filter === 'all') {
+        $('.masonry-item').fadeIn(300);
+      } else {
+        $('.masonry-item').each(function () {
+          if ($(this).data('category') === filter) {
+            $(this).fadeIn(300);
+          } else {
+            $(this).fadeOut(200);
+          }
+        });
+      }
+    });
+
+   
+    let lbItems = [];
+    let lbCurrent = 0;
+
+    
+    function buildIndex() {
+      lbItems = [];
+      $('.masonry-item:visible').each(function () {
+        const src = $(this).data('src');
+        lbItems.push(src || '');
+      });
+    }
+
+    function openLightbox(idx) {
+      buildIndex();
+      lbCurrent = idx;
+      updateLightbox();
+      $('#lightbox').addClass('open');
+      $('body').css('overflow', 'hidden');
+    }
+
+    function updateLightbox() {
+      const src = lbItems[lbCurrent];
+      $('#lbImg').attr('src', src);
+      $('#lbCounter').text(`${lbCurrent + 1} / ${lbItems.length}`);
+    }
+
+    function closeLightbox() {
+      $('#lightbox').removeClass('open');
+      $('body').css('overflow', '');
+    }
+
+    $('.masonry-item').each(function (idx) {
+      $(this).on('click', function () { openLightbox(idx); });
+    });
+
+    $('#lbClose').on('click', closeLightbox);
+
+    $('#lbPrev').on('click', function () {
+      lbCurrent = (lbCurrent - 1 + lbItems.length) % lbItems.length;
+      updateLightbox();
+    });
+
+    $('#lbNext').on('click', function () {
+      lbCurrent = (lbCurrent + 1) % lbItems.length;
+      updateLightbox();
+    });
+
+    
+    $('#lightbox').on('click', function (e) {
+      if ($(e.target).is('#lightbox')) closeLightbox();
+    });
+
+
+    $(document).on('keydown', function (e) {
+      if (!$('#lightbox').hasClass('open')) return;
+      if (e.key === 'ArrowLeft') $('#lbPrev').click();
+      if (e.key === 'ArrowRight') $('#lbNext').click();
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>

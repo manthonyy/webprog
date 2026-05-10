@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matthew — Hobby</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .hobby-hero {
+      padding: 4rem 8% 3rem;
+      background: linear-gradient(135deg, var(--cream) 60%, var(--cream-dark) 100%);
+      border-bottom: 1px solid rgba(201,152,58,.15);
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .breadcrumb a { color: var(--text-muted); transition: color .2s; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb .sep { opacity: .5; }
+    .breadcrumb .current { color: var(--orange); }
+
+    .hobby-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      font-size: .85rem;
+      color: var(--text-muted);
+    }
+    .hobby-meta span { display: flex; align-items: center; gap: 5px; }
+
+    .hobby-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.2;
+      color: var(--dark);
+      max-width: 700px;
+    }
+    .hobby-title em {
+      font-style: italic;
+      color: var(--orange);
+    }
+
+    .article-wrap {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 3rem;
+      padding: 4rem 8%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .article-body p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .article-img {
+      width: 100%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 2rem 0;
+      box-shadow: var(--shadow);
+    }
+    .article-img-inner {
+      aspect-ratio: 16/9;
+      position: relative;
+    }
+    .article-img-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .article-img .caption {
+      padding: .6rem 1rem;
+      font-size: .8rem;
+      font-style: italic;
+      color: var(--text-muted);
+      background: var(--cream-dark);
+    }
+
+    .article-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .article-img-grid .article-img { margin: 0; }
+    .article-img-grid .article-img .article-img-inner { aspect-ratio: 4/3; }
+
+    .article-section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem 0 1rem;
+      border-left: 3px solid var(--orange);
+      padding-left: 1rem;
+    }
+    .article-section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--dark);
+    }
+
+    .music-bands {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin: 1.5rem 0;
+    }
+    .band-badge {
+      background: var(--cream-dark);
+      border: 1px solid rgba(201,152,58,.25);
+      border-radius: 50px;
+      padding: .4rem 1rem;
+      font-size: .85rem;
+      color: var(--text);
+      font-weight: 500;
+      transition: all .2s;
+    }
+    .band-badge:hover {
+      background: var(--orange);
+      color: var(--white);
+      border-color: var(--orange);
+    }
+
+    .playlist-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .playlist-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+      transition: transform .25s;
+    }
+    .playlist-card:hover { transform: translateY(-4px); }
+    .playlist-icon {
+      font-size: 1.6rem;
+      margin-bottom: .6rem;
+    }
+    .playlist-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--dark);
+      margin-bottom: .3rem;
+    }
+    .playlist-card p { font-size: .82rem; color: var(--text-muted); line-height: 1.6; }
+
+    .article-sidebar {
+      position: sticky;
+      top: calc(var(--nav-h) + 20px);
+      height: fit-content;
+    }
+    .sidebar-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      padding-bottom: .6rem;
+      border-bottom: 1px solid rgba(201,152,58,.2);
+    }
+    .sidebar-link {
+      display: block;
+      font-size: .85rem;
+      color: var(--text-muted);
+      padding: .35rem 0;
+      border-bottom: 1px solid rgba(0,0,0,.05);
+      transition: color .2s;
+    }
+    .sidebar-link:hover { color: var(--orange); }
+    .sidebar-link:last-child { border-bottom: none; }
+
+    .article-cta {
+      background: var(--cream-dark);
+      border: 1px solid rgba(201,152,58,.2);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .article-cta p { font-size: .9rem; color: var(--text-muted); margin-bottom: .5rem; }
+    .article-cta h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .article-cta .cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    @media (max-width: 900px) {
+      .article-wrap {
+        grid-template-columns: 1fr;
+        padding: 2.5rem 6%;
+      }
+      .article-sidebar { position: static; }
+      .hobby-hero { padding: 3rem 6% 2.5rem; }
+      .playlist-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hobby-hero { padding: 2.5rem 5% 2rem; }
+      .article-wrap { padding: 2rem 5%; }
+      .article-img-grid { grid-template-columns: 1fr; }
+      .playlist-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">
+      <span class="logo-icon">✦</span> Matthew
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="hobby.html" class="active">Hobby</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="hobby.html" class="active">Hobby</a>
+    <a href="gallery.html">Gallery</a>
+  </div>
+
+  <main class="page-content">
+
+    <section class="hobby-hero">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">›</span>
+        <span class="current">My Photography Journey</span>
+      </div>
+      <h1 class="hobby-title reveal">
+        <em>"Capturing the moments makes it matter"</em>
+      </h1>
+    </section>
+
+    <div class="article-wrap">
+
+      <article class="article-body">
+
+        <p class="reveal">
+          Photography has been more than just a hobby for me — it's a way of seeing the world through a different lens,
+          quite literally. What started as casual snapshots on my phone has evolved into a passionate pursuit of
+          capturing light, emotion, and the beauty hidden in everyday moments. And now for me photography isn't just
+          taking photos, it's about preserving moments — it's not about how good the photos are, but the story that
+          you have behind every photo that you captured.
+        </p>
+
+        <div class="article-img reveal">
+          <div class="article-img-inner placeholder-img" style="background:linear-gradient(135deg,#0d1117,#1a2332);">
+            <img src="assets/hobby-camera.jpeg" alt="Camera" onerror="this.style.display='none'" />
+          </div>
+        </div>
+
+        <p class="reveal">
+          Around two or three years ago I was scrolling around my gallery and noticed a small icon on the edit section.
+          Turns out it's for you to edit the image's color, the saturation, the warmth — and in photography we call it
+          "color grading". Since then I try to find a recipe for the almost perfect color grading, and I like to capture
+          more photos, more various than before, then color grade them.
+        </p>
+
+        <div class="article-img reveal">
+          <div class="article-img-inner placeholder-img" style="background:linear-gradient(135deg,#101820,#1e3040);">
+            <img src="assets/hobby-japan.jpg" alt="Japan trip" onerror="this.style.display='none'" />
+          </div>
+          <div class="caption">One of my favorite shots from my Japan trip</div>
+        </div>
+
+        <p class="reveal">
+          Over the years, I've experimented with various genres — portrait, street, macro, and architectural photography.
+          But I always find myself drawn back to landscape and urban exploration. There's something about capturing the
+          grandeur of nature or the geometric patterns of city architecture that speaks to me.
+        </p>
+
+        <p class="reveal">
+          My photographic style has evolved to embrace natural lighting and authentic moments. I've learned that the best
+          photographs often happen when you're patient enough to wait for the perfect light, or brave enough to wake up
+          before dawn to catch the golden hour.
+        </p>
+
+        
+        <div class="article-img-grid reveal">
+          <div class="article-img">
+            <div class="article-img-inner placeholder-img" style="background:linear-gradient(135deg,#0e1a0e,#1e3a1e);">
+              <img src="assets/hobby-tree1.jpeg" alt="Nature" onerror="this.style.display='none'" />
+            </div>
+          </div>
+          <div class="article-img">
+            <div class="article-img-inner placeholder-img" style="background:linear-gradient(135deg,#1a1a0e,#3a3a1e);">
+              <img src="assets/hobby-tree2.jpeg" alt="Forest" onerror="this.style.display='none'" />
+            </div>
+          </div>
+        </div>
+
+       
+        <div class="article-section-header reveal">
+          <h2>The Technical Side</h2>
+        </div>
+        <p class="reveal">
+          While creativity is crucial, understanding the technical aspects of photography has been equally important.
+          Learning about exposure triangle — aperture, shutter speed, and ISO — opened up a whole new world of creative
+          possibilities. I spent countless hours practicing with different settings, learning how to freeze motion,
+          create beautiful bokeh, and capture long exposures.
+        </p>
+        <p class="reveal">
+          Also there is some technical side such as the way you place the object in frame — there's the rule of thirds,
+          golden ratio, leading line, and many more.
+        </p>
+
+      
+        <div class="article-section-header reveal">
+          <h2>Music as Meditation</h2>
+        </div>
+        <p class="reveal">
+          What I love most about music is how it pulls me into the present moment. When I put my headphones on,
+          everything else fades — the noise, the rush, the endless scrolling. It becomes just me and the sound.
+          Most days, I drift into the moody calm of Arctic Monkeys and The Weeknd. There's something about their
+          atmosphere that feels cinematic, like walking through the city at night with your own soundtrack playing
+          in the background.
+        </p>
+
+        <div class="music-bands reveal">
+          <span class="band-badge">🎸 Arctic Monkeys</span>
+          <span class="band-badge">🎵 The Weeknd</span>
+          <span class="band-badge">⚡ AC/DC</span>
+          <span class="band-badge">🤘 Guns N' Roses</span>
+          <span class="band-badge">🎶 Led Zeppelin</span>
+          <span class="band-badge">👑 Queen</span>
+          <span class="band-badge">🎤 Bon Jovi</span>
+          <span class="band-badge">🌙 Don Toliver</span>
+          <span class="band-badge">🏠 Sheila On 7</span>
+          <span class="band-badge">🌟 Dewa</span>
+        </div>
+
+  
+        <div class="article-img reveal">
+          <div class="article-img-inner placeholder-img" style="background:linear-gradient(135deg,#0d0d0d,#1a0a0a); aspect-ratio: 16/8;">
+            <img src="assets/hobby-music.jpg" alt="Music" onerror="this.style.display='none'" />
+          </div>
+        </div>
+
+      
+        <div class="article-section-header reveal">
+          <h2>Curated Moods</h2>
+        </div>
+        <p class="reveal">
+          I don't just listen to music — I organize it by feeling. Each playlist I make holds a different version of me.
+        </p>
+
+        <div class="playlist-grid reveal">
+          <div class="playlist-card">
+            <div class="playlist-icon">🚗</div>
+            <h4>Drive</h4>
+            <p>Loud, confident, and a little reckless. AC/DC, Don Toliver, explosive beats — for night drives that feel cinematic.</p>
+          </div>
+          <div class="playlist-card">
+            <div class="playlist-icon">🌧️</div>
+            <h4>Rain</h4>
+            <p>Slower, softer, more intimate. Number One Party Anthem, Wanna Be Yours — for cloudy skies and quiet thoughts.</p>
+          </div>
+          <div class="playlist-card">
+            <div class="playlist-icon">☀️</div>
+            <h4>Mine</h4>
+            <p>Brighter, warmer, more open. Pop songs, timeless love tracks — for when everything feels light and hopeful.</p>
+          </div>
+        </div>
+
+       
+        <div class="article-section-header reveal">
+          <h2>Echoes of Home</h2>
+        </div>
+        <p class="reveal">
+          Beyond all that, I still keep a space for Indonesian songs — especially the classics. There's something
+          grounding about revisiting familiar melodies from bands like Dewa or Sheila On 7. They carry nostalgia,
+          memories, and pieces of stories that feel close to home. No matter how wide my music taste goes — from
+          rock legends to modern R&B, from late-night indie to upbeat pop — it always circles back to something personal.
+        </p>
+
+   
+        <div class="article-cta reveal">
+          <p>🎞️ Want to see more of my photos?</p>
+          <h3>Check out my photo gallery to see a collection of my favorite shots.</h3>
+          <div class="cta-btns">
+            <a href="gallery.html" class="btn btn-primary">View Gallery &rarr;</a>
+          </div>
+        </div>
+        <div class="article-cta reveal">
+          <p>🙋 Do You Want to see more About me?</p>
+          <h3>Check out my Profile to see more about me.</h3>
+          <div class="cta-btns">
+            <a href="index.html" class="btn btn-outline">View My Profile</a>
+          </div>
+        </div>
+
+      </article>
+
+   
+      <aside class="article-sidebar">
+        <div class="sidebar-card reveal">
+          <h4>In This Article</h4>
+          <a href="#" class="sidebar-link">Photography Journey</a>
+          <a href="#" class="sidebar-link">Color Grading</a>
+          <a href="#" class="sidebar-link">The Technical Side</a>
+          <a href="#" class="sidebar-link">Music as Meditation</a>
+          <a href="#" class="sidebar-link">Curated Moods</a>
+          <a href="#" class="sidebar-link">Echoes of Home</a>
+        </div>
+        <div class="sidebar-card reveal">
+          <h4>Quick Links</h4>
+          <a href="gallery.html" class="sidebar-link">📷 View Gallery</a>
+          <a href="index.html" class="sidebar-link">👤 About Me</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="interested-section">
+      <h3><span>⭑</span> Maybe You're Interested?</h3>
+      <div class="interested-grid">
+        <div class="interested-card reveal">
+          <div class="img-wrap placeholder-img" style="background:linear-gradient(135deg,#0a1420,#162840);">
+            <img src="assets/int-gallery.jpg" alt="Gallery" onerror="this.style.display='none'" />
+          </div>
+          <div class="overlay"></div>
+          <div class="card-content">
+            <p>See More</p>
+            <h4>About me</h4>
+            <a href="index.html" class="btn btn-dark">View My Profile</a>
+          </div>
+        </div>
+        <div class="interested-card reveal reveal-delay-1">
+          <div class="img-wrap placeholder-img" style="background:linear-gradient(135deg,#0e1a0e,#1e3a1e);">
+            <img src="assets/int-nature.jpg" alt="Photos" onerror="this.style.display='none'" />
+          </div>
+          <div class="overlay"></div>
+          <div class="card-content">
+            <p>Browse</p>
+            <h4>See More of My Photos</h4>
+            <a href="gallery.html" class="btn btn-dark">View Gallery</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+
+  <footer class="footer">
+    <div class="footer-ornament">
+      <div class="line"></div>
+      <span>✦</span>
+      <div class="line"></div>
+    </div>
+    <p>© 2026 Matthew. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

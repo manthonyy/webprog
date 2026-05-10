@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matthew — Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ── HERO ── */
+    .hero {
+      min-height: calc(100vh - var(--nav-h));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 3rem;
+      padding: 5rem 8% 4rem;
+      background: linear-gradient(135deg, var(--cream) 60%, var(--cream-dark) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -80px;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,152,58,.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-stars { font-size: 1.4rem; letter-spacing: 4px; margin-bottom: .7rem; }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 1.2rem;
+    }
+    .hero-name span {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-name span::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; left: 0; right: 0;
+      height: 3px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 400px;
+      margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Hero image */
+    .hero-img-wrap {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .hero-img-frame {
+      width: min(420px, 100%);
+      aspect-ratio: 3/4;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .hero-img-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-img-badge {
+      position: absolute;
+      bottom: -18px; left: -18px;
+      background: var(--white);
+      border-radius: 12px;
+      padding: .8rem 1.2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .hero-img-badge .badge-icon {
+      width: 36px; height: 36px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: .85rem;
+    }
+    .hero-img-badge .badge-text { font-size: .78rem; line-height: 1.4; }
+    .hero-img-badge .badge-text strong { display: block; color: var(--dark); font-size: .85rem; }
+
+    /* ── WHAT I DO ── */
+    .what-i-do {
+      padding: 6rem 8%;
+      background: var(--cream);
+    }
+    .what-i-do .section-head { margin-bottom: 3.5rem; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem 1.8rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      opacity: .08;
+    }
+    .service-card.c1::before { background: var(--orange); }
+    .service-card.c2::before { background: #e05a2b; }
+    .service-card.c3::before { background: #2bbda0; }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+    .service-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      color: white;
+      margin-bottom: 1.2rem;
+    }
+    .c1 .service-icon { background: var(--orange); }
+    .c2 .service-icon { background: #e05a2b; }
+    .c3 .service-icon { background: #2bbda0; }
+
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: .6rem;
+      color: var(--dark);
+    }
+    .service-card p { font-size: .9rem; color: var(--text-muted); line-height: 1.7; }
+
+    /* ── PREVIEW CAROUSEL ── */
+    .preview-section {
+      padding: 6rem 8%;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
+    }
+    .preview-section .section-head { margin-bottom: 3rem; }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+    }
+    .carousel-slide {
+      min-width: 100%;
+      position: relative;
+      aspect-ratio: 16/8;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .carousel-slide .slide-img {
+      width: 100%; height: 100%;
+    }
+    .carousel-slide .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20,12,4,.75) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem;
+      color: var(--white);
+    }
+    .slide-overlay p { font-size: .85rem; opacity: .75; margin-bottom: .3rem; }
+    .slide-overlay h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      margin-bottom: 1rem;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(250,246,239,.9);
+      border: none;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+      z-index: 2;
+    }
+    .carousel-btn:hover {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transform: translateY(-50%) scale(1.08);
+    }
+    .carousel-btn.prev { left: 16px; }
+    .carousel-btn.next { right: 16px; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.2rem;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(201,152,58,.35);
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .dot.active {
+      background: var(--orange);
+      width: 22px;
+      border-radius: 4px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 4rem 6% 4rem;
+        gap: 2rem;
+      }
+      .hero-left { order: 2; }
+      .hero-img-wrap { justify-content: center; order: 1; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-cta { justify-content: center; }
+      .hero-img-badge { left: 10px; bottom: -14px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .what-i-do { padding: 4rem 6%; }
+      .preview-section { padding: 4rem 6%; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 3rem 5% 3rem; }
+      .carousel-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">
+      <span class="logo-icon">✦</span> Matthew
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="hobby.html">Hobby</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu">
+    <a href="index.html" class="active">Home</a>
+    <a href="hobby.html">Hobby</a>
+    <a href="gallery.html">Gallery</a>
+  </div>
+
+  <main class="page-content">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-stars reveal">⭑ ⭑ ⭑</div>
+        <h1 class="hero-name reveal reveal-delay-1">
+          Hi, I'm <span>Matthew</span>
+        </h1>
+        <p class="hero-desc reveal reveal-delay-2">
+          Right now I'm studying as an IMT major student in Universitas Ciputra Surabaya.
+          I like to capture moments through my photos, and I'm also a huge fan of music —
+          mostly Arctic Monkeys, AC/DC, Guns N' Roses, and The Weeknd.
+        </p>
+        <div class="hero-cta reveal reveal-delay-3">
+          <a href="gallery.html" class="btn btn-primary">View My Gallery &rarr;</a>
+          <a href="hobby.html" class="btn btn-outline">Read About My Hobby</a>
+        </div>
+      </div>
+
+      <div class="hero-img-wrap reveal reveal-delay-2">
+        <div class="hero-img-frame">
+          <!-- Replace src with your photo -->
+          <img
+            src="assets/matthew-hero.jpeg"
+            alt="Matthew"
+            onerror="this.style.display='none'; this.parentElement.classList.add('placeholder-img'); this.parentElement.innerHTML='<span style=&quot;padding:1rem;text-align:center;color:var(--text-muted)&quot;>📷 Add your photo here<br><small>assets/matthew-hero.jpeg</small></span>'"
+          />
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- WHAT I DO -->
+    <section class="what-i-do">
+      <div class="section-head">
+        <div class="section-ornament reveal">
+          <div class="line"></div>
+          <span class="icon">✦</span>
+          <div class="line"></div>
+        </div>
+        <h2 class="section-label reveal">What I Do</h2>
+        <p class="section-sub reveal">
+          I'm passionate about creating, exploring, and sharing experiences through various creative outlets.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card c1 reveal">
+          <div class="service-icon"><i class="fa fa-code"></i></div>
+          <h3>Coding</h3>
+          <p>Building the back-end of an app, going through trial and error. And learning the logic behind every code.</p>
+        </div>
+        <div class="service-card c2 reveal reveal-delay-1">
+          <div class="service-icon"><i class="fa fa-camera"></i></div>
+          <h3>Photography</h3>
+          <p>Capturing the beauty of landscapes, architecture, and everyday moments through the art of photography.</p>
+        </div>
+        <div class="service-card c3 reveal reveal-delay-2">
+          <div class="service-icon"><i class="fa fa-music"></i></div>
+          <h3>Music</h3>
+          <p>I listen to a various genre of music, and I already set my playlist based on my mood.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW CAROUSEL -->
+    <section class="preview-section">
+      <div class="section-head">
+        <div class="section-ornament reveal">
+          <div class="line"></div>
+          <span class="icon">⭑</span>
+          <div class="line"></div>
+        </div>
+        <h2 class="section-label reveal">Want to Know Me More?</h2>
+        <p class="section-sub reveal">A selection of my recent photography and projects</p>
+      </div>
+
+      <div class="carousel-wrapper reveal">
+        <div class="carousel-track" id="carouselTrack">
+
+          <!-- Slide 1: Gallery -->
+          <div class="carousel-slide" onclick="location.href='gallery.html'">
+            <div class="slide-img placeholder-img" style="background:linear-gradient(135deg,#1a2a3a,#2d4a6b);">
+              <img src="assets/preview-gallery.jpg" alt="Gallery" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />
+            </div>
+            <div class="slide-overlay">
+              <p>My Gallery</p>
+              <h2>The Museum of My Life</h2>
+              <a href="gallery.html" class="btn btn-primary" style="width:fit-content;">View Gallery &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Slide 2: Hobby -->
+          <div class="carousel-slide" onclick="location.href='hobby.html'">
+            <div class="slide-img placeholder-img" style="background:linear-gradient(135deg,#1a0a0a,#3a1a10);">
+              <img src="assets/preview-hobby.jpg" alt="Hobby" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />
+            </div>
+            <div class="slide-overlay">
+              <p>Hobby</p>
+              <h2>What I Like To Do and What It's About</h2>
+              <a href="hobby.html" class="btn btn-primary" style="width:fit-content;">Read More &rarr;</a>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="carousel-btn prev" id="prevBtn">&#8592;</button>
+        <button class="carousel-btn next" id="nextBtn">&#8594;</button>
+      </div>
+
+      <div class="carousel-dots">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+      </div>
+    </section>
+
+    <div class="interested-section">
+      <h3><span>⭑</span> Maybe You're Interested?</h3>
+      <div class="interested-grid">
+        <div class="interested-card reveal">
+          <div class="img-wrap placeholder-img" style="background:linear-gradient(135deg,#0f1923,#1e3448);">
+            <img src="assets/int-gallery.jpg" alt="Gallery" onerror="this.style.display='none'" />
+          </div>
+          <div class="overlay"></div>
+          <div class="card-content">
+            <p>Explore</p>
+            <h4>My Gallery</h4>
+            <a href="gallery.html" class="btn btn-dark">View Gallery</a>
+          </div>
+        </div>
+        <div class="interested-card reveal reveal-delay-1">
+          <div class="img-wrap placeholder-img" style="background:linear-gradient(135deg,#1a0a05,#3d1a0e);">
+            <img src="assets/int-hobby.jpg" alt="Hobby" onerror="this.style.display='none'" />
+          </div>
+          <div class="overlay"></div>
+          <div class="card-content">
+            <p>Read</p>
+            <h4>About My Hobby</h4>
+            <a href="hobby.html" class="btn btn-dark">View Hobby</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-ornament">
+      <div class="line"></div>
+      <span>✦</span>
+      <div class="line"></div>
+    </div>
+    <p>© 2026 Matthew. All rights reserved.</p>
+  </footer>
+
+  <!-- jQuery + JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    /* Carousel */
+    let current = 0;
+    const slides = $('.carousel-track .carousel-slide').length;
+
+    function goTo(idx) {
+      current = (idx + slides) % slides;
+      $('#carouselTrack').css('transform', `translateX(-${current * 100}%)`);
+      $('.dot').removeClass('active');
+      $(`.dot[data-index="${current}"]`).addClass('active');
+    }
+
+    $('#nextBtn').on('click', () => goTo(current + 1));
+    $('#prevBtn').on('click', () => goTo(current - 1));
+    $('.dot').on('click', function () { goTo(parseInt($(this).data('index'))); });
+
+    /* Auto-play */
+    setInterval(() => goTo(current + 1), 5000);
+  </script>
+</body>
+</html>
